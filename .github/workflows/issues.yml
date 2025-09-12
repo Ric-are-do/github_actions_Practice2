@@ -4,9 +4,9 @@ on:
   issues:
     types: [opened, edited, deleted, transferred, pinned, unpinned, closed, reopened, assigned, unassigned, labeled, unlabeled, milestoned, demilestoned]
 
-  jobs:
-    information: 
-    runs-on: ubuntu-latest
-    steps:
-      - name: output the event details
-      - run: echo "${{toJson(github.event) }}"
+jobs:
+  information: 
+  runs-on: ubuntu-latest
+  steps:
+    - name: output the event details
+    - run: echo "${{toJson(github.event) }}"
