@@ -7,6 +7,5 @@ on:
     information: 
     runs-on: ubuntu-latest
     steps:
-      - name: output the event details 
-      - run: echo "${{ toJson(github.event) }}""
-       
+      - name: output the event details
+      - run: echo "${{ toJson(github.event) }}"
