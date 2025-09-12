@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  All_scripts_in_one::
+  all::
     needs: lint
     runs-on: ubuntu-latest
     steps:
