@@ -6,8 +6,10 @@ on:
       - main
       - 'dev-*' # to include any branch that starts with "dev-"
       - 'feature/*' # to include any branch that starts with "feature/"
-      
+      - 'bugfix/*' # to include any branch that starts with "bugfix/"
   workflow_dispatch:
+
+#NB:  you can skip a workflow run for a particular commit by including [skip ci] or [ci skip] in the commit message
 
 jobs:
   lint:

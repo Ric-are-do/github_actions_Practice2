@@ -41,9 +41,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-results
-          path: |
-            dist
-            package.json
+          path: dist
+          #path: |
+           # dist
+            #package.json
 
   deploy:
     needs: build
@@ -51,6 +52,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Download the build artifacts
+        uses: actions/Download-artifact@v4
+        with:
+          name: build-results # this is the name of the uploaded artifact created in the last job
+          path: dist
+
+      - name: list files in folder
+        run: ls
 
       - name: Deploy application
         run: echo "Deploying application"
