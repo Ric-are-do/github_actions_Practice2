@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+      - 'dev-*' # to include any branch that starts with "dev-"
+      - 'feature/*' # to include any branch that starts with "feature/"
+      
   workflow_dispatch:
 
 jobs:
