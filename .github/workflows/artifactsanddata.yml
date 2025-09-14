@@ -1,0 +1,60 @@
+name: Artifacts and Data
+
+on: 
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+#NB:  you can skip a workflow run for a particular commit by including [skip ci] or [ci skip] in the commit message
+
+jobs:
+
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name:  checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
+
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name:  checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run build script
+        run: npm run build
+
+      - name: upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build results
+          path: |
+            dist
+            package.json
+
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+
+      - name : Deploy application
+        run: echo "Deploying application"
