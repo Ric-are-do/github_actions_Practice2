@@ -11,6 +11,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    outputs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -24,9 +25,15 @@ jobs:
       - name: Run tests
         run: npm test
 
+  #understand contexts : https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#needs-context
   build:
     needs: test
     runs-on: ubuntu-latest
+    # if you want to pass data between jobs you need to declare the
+    # here we set the output value for the job using an expression
+    outputs: 
+            # this is an identifier you declare , since its the one you will later access
+      script-file: ${{steps.step_file_name.outputs.myFilename}}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -36,6 +43,12 @@ jobs:
 
       - name: Run build script
         run: npm run build
+
+      - name: Output filename of Js filename
+        id: step_file_name #this ID is how we access the output of this step
+        run: find dist/asset/*.js -type f -execdir echo 'myFilename={}' >> GITHUB_OUTPUT ';'
+        # we use the script-file above ( this is a custom name and you can name it whatever you want)
+        # the GITHUB_OUTPUT is a special variable that allows you to set output values for steps
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -61,6 +74,10 @@ jobs:
 
       - name: list files in folder
         run: ls
+
+      # now lets use that artifact we created in the build job
+      - name : output the file name from build job
+        run: echo "${{ needs.build.outputs.script-file }}"
 
       - name: Deploy application
         run: echo "Deploying application"
