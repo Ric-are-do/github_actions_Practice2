@@ -15,6 +15,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+# for caching we need to add it before the step we want to cache, in thisc case before installing dependencies
+      - name: cache dependencies 
+        uses: actions/cache@v4
+        with: 
+          # we can add the path here to the cached folder
+          path: ~/.npm
+          # we need to set a key for the cache
+          # we know that this file changes when dependencies change and 
+          # that in node this is the file that contains the dependencies
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+
+        # this will still run , but if it sees that the key is the same as a previous run
+        # it will restore the cache from that previous run
+        # and if the key is different it will create a new cache entry
+        # for caching to work on differnt progreamming languages, check the offical documentation 
       - name: Install dependencies
         run: npm ci
 
@@ -24,22 +39,21 @@ jobs:
       - name: Run tests
         run: npm test
 
-  #understand contexts : https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#needs-context
   build:
     needs: test
     runs-on: ubuntu-latest
-    # if you want to pass data between jobs you need to declare the
-    # here we set the output value for the job using an expression
     outputs: 
-            # this is an identifier you declare , since its the one you will later access
       script-file: ${{steps.step_file_name.outputs.myFilename}} 
-            # this is how you access the output of a step in a job
-            # steps.<step_id>.outputs.<output_name>
-            # step_id is the ID you set for the step below ( step_file_name)
-            # output_name is the name of the output you set in that step ( also step_file_name)
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+        # we now repeat this caching step here in the build job for all jobs that use dependencies
+      - name: cache dependencies 
+        uses: actions/cache@v4
+        with: 
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
         run: npm ci
@@ -50,9 +64,6 @@ jobs:
       - name: Output filename of Js filename
         id: step_file_name #this ID is how we access the output of this step
         run:  find dist/assets/*.js -type f -execdir echo 'myFilename={}' >> $GITHUB_OUTPUT ';'
-
-        # we use the script-file above ( this is a custom name and you can name it whatever you want)
-        # the GITHUB_OUTPUT is a special variable that allows you to set output values for steps
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
