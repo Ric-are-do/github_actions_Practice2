@@ -32,7 +32,7 @@ jobs:
     # here we set the output value for the job using an expression
     outputs: 
             # this is an identifier you declare , since its the one you will later access
-      script-file: ${{steps.step_file_name.outputs.step_file_name}} 
+      script-file: ${{steps.step_file_name.outputs.myFilename}} 
             # this is how you access the output of a step in a job
             # steps.<step_id>.outputs.<output_name>
             # step_id is the ID you set for the step below ( step_file_name)
