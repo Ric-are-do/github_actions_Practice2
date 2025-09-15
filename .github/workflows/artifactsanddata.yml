@@ -49,7 +49,7 @@ jobs:
 
       - name: Output filename of Js filename
         id: step_file_name #this ID is how we access the output of this step
-        run: find dist/assets/*.js -type f -execdir echo 'myFilename={}' >> GITHUB_OUTPUT ';'
+        run: find dist/assets/*.js -type f -execdir echo 'myFilename={}' >> $GITHUB_OUTPUT ';'
 
         # we use the script-file above ( this is a custom name and you can name it whatever you want)
         # the GITHUB_OUTPUT is a special variable that allows you to set output values for steps
