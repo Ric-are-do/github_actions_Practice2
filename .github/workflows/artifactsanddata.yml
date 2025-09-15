@@ -32,7 +32,11 @@ jobs:
     # here we set the output value for the job using an expression
     outputs: 
             # this is an identifier you declare , since its the one you will later access
-      script-file: ${{steps.step_file_name.outputs.myFilename}}
+      script-file: ${{steps.step_file_name.outputs.step_file_name}} 
+            # this is how you access the output of a step in a job
+            # steps.<step_id>.outputs.<output_name>
+            # step_id is the ID you set for the step below ( step_file_name)
+            # output_name is the name of the output you set in that step ( also step_file_name)
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -46,6 +50,7 @@ jobs:
       - name: Output filename of Js filename
         id: step_file_name #this ID is how we access the output of this step
         run: find dist/assets/*.js -type f -execdir echo 'myFilename={}' >> GITHUB_OUTPUT ';'
+
         # we use the script-file above ( this is a custom name and you can name it whatever you want)
         # the GITHUB_OUTPUT is a special variable that allows you to set output values for steps
 
