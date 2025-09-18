@@ -1,9 +1,6 @@
-name: Artifacts and Data caching with shared steps
+name: AEnvironment Variables Example
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 # NB: you can skip a workflow run for a particular commit by including [skip ci] or [ci skip] in the commit message
 # Declairing environment variables
