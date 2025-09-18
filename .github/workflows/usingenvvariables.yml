@@ -10,6 +10,8 @@ env:
   DEPLOY_ENV: staging
   API_URL: https://api.example.com
 
+  # set env variables for login in github secrets and use them here
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -90,4 +92,14 @@ jobs:
           echo "NODE_ENV: ${{ env.Node_env }}"
           echo "DEPLOY_ENV: ${{ env.DEPLOY_ENV }}"
           echo "API_URL: ${{ env.API_URL }}"
+          echo "Secrets Username : ${{ secrets.ENV_USERNAME }}"
+          echo "Secrets Password: ${{ secrets.ENV_PASSWORD }}"
+          echo "Secrets Password: ${{ secrets.ANOTHERSECRET }}"
+
+# note that the secrets for username and password are in the repository settings file 
+#they are named ENV_USERNAME and ENV_PASSWORD , you do not have to always add the env part , i just did it for vibes and energy
+# I added another called another secret to show you can add as many as you want and whith any name you want since you access them 
+          #using the secrets context
+
+# nnote when you try and print those secrets github will not let you see them in the logs for security reasons
 
