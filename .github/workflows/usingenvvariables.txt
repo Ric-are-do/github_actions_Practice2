@@ -101,5 +101,4 @@ jobs:
 # I added another called another secret to show you can add as many as you want and whith any name you want since you access them 
           #using the secrets context
 
-# nnote when you try and print those secrets github will not let you see them in the logs for security reasons
-
+# nnote when you try and print those secrets github will not let you see them in the logs for security reasons but they are there
