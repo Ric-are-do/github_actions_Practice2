@@ -36,7 +36,9 @@ jobs:
         with:
           name: test-report
           path: test.json
+
       - name: Output information
+        if: ${{ always() }}
         run: ls
   deploy:
     needs: test
