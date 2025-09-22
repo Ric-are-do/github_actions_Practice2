@@ -27,7 +27,10 @@ jobs:
       - name: upload test results
       # this step will only run if the tests fail
       # we look in the step context -> Get the id for that step that ran -> check the outcome of that step to see if it passed or failed 
-        if: ${{ steps.run_tests.outcome == 'failure' }}
+      # When the test fails in the run tests , then github will do its defait behavior of stopping the workflow but we dont wa that to happen , we want it to continue to the next step so we can execute the upload test results step
+      # to do this we add a special function that says the stem when a step fails failure () then we combine it with && to the steps if statmeent that checks if the outcome of the run tests step is failure
+      # 
+        if: ${{ failure() && steps.run_tests.outcome == 'failure' }}
         uses: actions/upload-artifact@v4
         with:
           name: test-report
