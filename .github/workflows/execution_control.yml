@@ -35,7 +35,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-report
-          path: test.json
+          ## upload the artofoact for the package lock.json 
+          path: package-lock.json
 
       - name: Output information
         if: ${{ always() }}
