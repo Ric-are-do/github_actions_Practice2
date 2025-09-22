@@ -18,9 +18,16 @@ jobs:
           key: npm-deps-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci
+        # here I add the if key , then confirm that the next step regarding uploading the test report should only happen if we have a failing test 
+        # we add an Id to this run tests step so that we check if the step failed or not and then we use that in our if expression by the upload test results step 
       - name: Run tests
+        id: run_tests
         run: npm test
+
       - name: upload test results
+      # this step will only run if the tests fail
+      # we look in the step context -> Get the id for that step that ran -> check the outcome of that step to see if it passed or failed 
+        if: ${{ steps.run_tests.outcome == 'failure' }}
         uses: actions/upload-artifact@v4
         with:
           name: test-report
