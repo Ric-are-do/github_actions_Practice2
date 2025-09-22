@@ -59,4 +59,4 @@ jobs:
       - name: Output information
         run: |
           echo "The test job failed, please check the logs"
-          echo "${{ github }}"
+          echo "${{ toJSON(github) }}"
