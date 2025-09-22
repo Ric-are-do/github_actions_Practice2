@@ -53,12 +53,6 @@ jobs:
 
         # we use the script-file above ( this is a custom name and you can name it whatever you want)
         # the GITHUB_OUTPUT is a special variable that allows you to set output values for steps
-        
-      - name: List files in dist
-        run: |
-          echo "Listing all files in dist/"
-          ls -Rlah dist || echo "⚠️ dist folder not found"
-
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
