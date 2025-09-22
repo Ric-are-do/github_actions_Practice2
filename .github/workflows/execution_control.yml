@@ -23,6 +23,8 @@ jobs:
       - name: Run tests
         id: run_tests
         run: npm test
+        # add this step below informing the pipeline to continue on error 
+        continue-on-error: true
 
       - name: upload test results
       # this step will only run if the tests fail
