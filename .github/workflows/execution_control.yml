@@ -48,3 +48,13 @@ jobs:
       - name: Output information
         run: |        
           echo "..."
+
+## add a Job that only runs if another job fails - then it will run this job and then echo the github context
+  report:
+    if: failure()
+    run-on:ubuntu-latest
+    steps:
+      - name: Output information
+        run: |
+          echo "The test job failed, please check the logs"
+          echo "${{github}}"
