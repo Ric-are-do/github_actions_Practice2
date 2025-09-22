@@ -50,7 +50,9 @@ jobs:
           echo "..."
 
 ## add a Job that only runs if another job fails - then it will run this job and then echo the github context
+#note that this will be skipped since its evaluated in parallel to the other jobs so you do need to add the depends on the test and deploy jobs to run first 
   report:
+    needs: [test, deploy]
     if: failure()
     runs-on: ubuntu-latest
     steps:
