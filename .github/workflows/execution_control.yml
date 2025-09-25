@@ -12,11 +12,14 @@ jobs:
       - name: Get Code
         uses: actions/checkout@v3
       - name: Cache dependencies
+        id: cache
         uses: actions/cache@v3
         with:
-          path: ~/.npm
-          key: npm-deps-${{ hashFiles('**/package-lock.json') }}
+          path: node_modules
+          key: deps-node-modules ${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
+      # Adding an if condition so we can skip npm ci if the modules are already cached
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
         # here I add the if key , then confirm that the next step regarding uploading the test report should only happen if we have a failing test 
         # we add an Id to this run tests step so that we check if the step failed or not and then we use that in our if expression by the upload test results step 
