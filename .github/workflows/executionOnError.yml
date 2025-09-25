@@ -1,4 +1,4 @@
-name: executon on Error workflow
+name: executon on error workflow
 on:
   workflow_dispatch:
   push:
@@ -24,7 +24,7 @@ jobs:
       - name: Run tests
       # setting the continue on error to true so that the workflow continues even if this step fails
       # so if this test step fails , the workflow will continue to the next step which is the upload test results step
-        continure-on-error: true
+        continue-on-error: true
         id: run_tests
         run: npm test
       - name: upload test results     
