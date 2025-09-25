@@ -1,0 +1,29 @@
+name: matrix workflow
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  buildJob:
+    strategy:
+    # this matrix means the same job will run for all the different combinations of the variables defined in the matrix
+      matrix:
+        ## here you create a set of variables that you can access via the matrix context
+        # you can have multiple variables in the 
+        # in this case we are adding a variable for different node versions and different opetating systems or runners
+        operatingSystems: [ubuntu-latest, windows-latest]
+        nodeVersions: [14, 16, 18]
+    runs-on: ${{ matrix.operatingSystems }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.nodeVersions}}
+      - name: Install dependencies
+        run: npm ci
+      - name: Run build script
+        run: npm run build
+
