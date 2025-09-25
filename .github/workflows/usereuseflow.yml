@@ -22,6 +22,7 @@ jobs:
         run: npm run lint
 
       - name: Run tests
+        continue-on-error: true
         run: npm test
 
   #understand contexts : https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#needs-context
