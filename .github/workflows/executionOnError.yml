@@ -1,0 +1,57 @@
+name: executon on Error workflow
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - dev
+jobs:
+  test:
+    environment: testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: deps-node-modules ${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Run tests
+      # setting the continue on error to true so that the workflow continues even if this step fails
+      # so if this test step fails , the workflow will continue to the next step which is the upload test results step
+        continure-on-error: true
+        id: run_tests
+        run: npm test
+      - name: upload test results     
+        if: ${{ failure() && steps.run_tests.outcome == 'failure' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: package-lock.json
+
+      - name: Output information
+        if: ${{ always() }}
+        run: ls
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output information
+        run: |        
+          echo "..."
+
+
+  report:
+    needs: [test, deploy]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output information
+        run: |
+          echo "The test job failed, please check the logs"
+          echo "${{ toJSON(github) }}"
