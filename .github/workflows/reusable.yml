@@ -1,0 +1,15 @@
+name: reusable workflow we will use elsewhere
+
+# to make this reusable in other workflows we need to add it in a way that other worflows can call it
+# this is the workflow call event , which allows this workflow to be called by other workflows
+on : workflow_call
+
+jobs:
+  reuse:
+    runs-on: $ubuntu-latest
+    steps:
+      - name: just outputs something from this reusable workflow
+        run: echo " this is from the reusable workflow"
+
+        
+
