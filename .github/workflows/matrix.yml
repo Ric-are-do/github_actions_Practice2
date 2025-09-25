@@ -14,6 +14,18 @@ jobs:
         # in this case we are adding a variable for different node versions and different opetating systems or runners
         operatingSystems: [ubuntu-latest, windows-latest]
         nodeVersions: [14, 16, 18]
+        # this is a reserved key that you use to define  combinations you may want - allows you add stand alone combinations
+        # exclude allows you to remove specific combinations you want to exclude from the generated matrix 
+        include:
+          - operatingSystems: ubuntu-latest
+            nodeVersions: 14
+          - operatingSystems: windows-latest
+            nodeVersions: 16
+        
+        exclude:
+          - operatingSystems: windows-latest
+            nodeVersions: 14
+
     runs-on: ${{ matrix.operatingSystems }}
     steps:
       - name: Checkout repository
