@@ -72,7 +72,7 @@ jobs:
     with:
       # here we provide the input value for the reusable workflow
       # this is the name of the artifact we want to download - this is dynamic now since we are passing it as an input
-      artifact-name: build-results 
+       artifact-name: build-results 
       # if we did not provide a value here it would default to build-results since that is what we set in reusable.yml
    
 

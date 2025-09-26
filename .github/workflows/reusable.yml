@@ -2,14 +2,42 @@ name: reusable workflow we will use elsewhere
 
 # to make this reusable in other workflows we need to add it in a way that other worflows can call it
 # this is the workflow call event , which allows this workflow to be called by other workflows
-on : workflow_call
+on : 
+  workflow_call:
+    inputs:
+    # here you add any inputs you want to pass to this reusable workflow -> IE the name of the file you want to download
+      artifact-name: # this is a normal variable
+        description: This is name of the artifact to download
+        required: true # this workflow should fail if we are not getting this input 
+        default: build-results # this is the default value if the calling workflow does not provide a value -> so if it required is false and we dont get anything then it will default looking for the  build-results artifact i name 
+        type: string # this is the type of the input
 
+
+
+
+
+
+# we can also define inputs and outputs for this reusable workflow - so in the useresuableflow We upload an artifact , so what if we want to pass the name of the artifact to this reusable workflow
 jobs:
   reuse:
     runs-on: ubuntu-latest
     steps:
       - name: just outputs something from this reusable workflow
         run: echo " this is from the reusable workflow"
+      - name: Get Code
+        uses: actions/download-artifact@v4
+        # we uploaded the dist file folder
+        with:
+        #  name: build-results # this is the name of the artifact we uploaded in the previous workflow ( the problem with this is that its hardcoded and we can only ever uplaod this specific artifact name )
+        # instead we rather do this dynamically using inputs and outputs
+          name: ${{ inputs.artifact-name }}
+
+      - name: list file to confirm download worked 
+        run: ls 
+
+        # with this setup , we need to provide a value in wherever this workflow is being called , in knows what input it needs to take in and use - this is in usereuseflow.yml
+
+
 
         
 
