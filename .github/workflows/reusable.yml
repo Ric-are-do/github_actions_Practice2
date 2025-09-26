@@ -25,8 +25,8 @@ jobs:
   
   reuse:
   # add outputs to the job
-   outputs: 
-    outcome: ${{steps.set_result.outputs.step-result}}
+    outputs: 
+      outcome: ${{steps.set_result.outputs.step-result}}
 
     runs-on: ubuntu-latest
     steps:
@@ -39,12 +39,9 @@ jobs:
         #  name: build-results # this is the name of the artifact we uploaded in the previous workflow ( the problem with this is that its hardcoded and we can only ever uplaod this specific artifact name )
         # instead we rather do this dynamically using inputs and outputs
           name: ${{ inputs.artifact-name }}
-
       - name: list file to confirm download worked 
         run: ls 
-
         # with this setup , we need to provide a value in wherever this workflow is being called , in knows what input it needs to take in and use - this is in usereuseflow.yml
-
       - name: set result output from the github output context 
         id: set_result
         run: echo "step-result = success" >> $GITHUB_OUTPUT
