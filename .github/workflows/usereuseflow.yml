@@ -74,5 +74,14 @@ jobs:
       # this is the name of the artifact we want to download - this is dynamic now since we are passing it as an input
        artifact-name: build-results 
       # if we did not provide a value here it would default to build-results since that is what we set in reusable.yml
+
+    # we can also access the output of the reusable workflow here as well
+  
+  print_reusable_outcomes:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: print outcome from reusable workflow
+        run: echo " the outcome from the reusable workflow was ${{needs.deploy.outputs.result}}" # we need deploy because thats where the outcome of the reusable workflow is being called
    
 
