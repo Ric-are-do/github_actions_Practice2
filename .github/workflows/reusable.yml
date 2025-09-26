@@ -12,14 +12,22 @@ on :
         default: build-results # this is the default value if the calling workflow does not provide a value -> so if it required is false and we dont get anything then it will default looking for the  build-results artifact i name 
         type: string # this is the type of the input
 
-
-
+#we can use outputs on our reusable workflow as well - so if we want to pass something back to the calling workflow
+    outputs:
+      result:
+        description: " this is the result from the reusable workflow"
+        value: " ${{jobs.reuse.outputs.outcome}} " # this is how we access the output of a job in this workflow - we will define this job below - the outcome is the name of the output we will set in the job below
 
 
 
 # we can also define inputs and outputs for this reusable workflow - so in the useresuableflow We upload an artifact , so what if we want to pass the name of the artifact to this reusable workflow
 jobs:
+  
   reuse:
+  # add outputs to the job
+   outputs: 
+    outcome: ${{steps.set_result.outputs.step-result}}
+
     runs-on: ubuntu-latest
     steps:
       - name: just outputs something from this reusable workflow
@@ -36,6 +44,10 @@ jobs:
         run: ls 
 
         # with this setup , we need to provide a value in wherever this workflow is being called , in knows what input it needs to take in and use - this is in usereuseflow.yml
+
+      - name: set result output from the github output context 
+        id: set_result
+        run: echo "step-result = success" >> $GITHUB_OUTPUT
 
 
 
